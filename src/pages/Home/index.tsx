@@ -1,4 +1,4 @@
-import {useState} from 'react'; 
+import {useLiveQuery} from 'dexie-react-hooks';
 import { Task } from '../../models/task';
 
 import './home.css';
@@ -7,12 +7,21 @@ import Header from '../../components/Header';
 import AddItemsBar from './AddItemsBar';
 import TableItems from './TableItems';
 
+import { db } from '../../services/db';
+
 export default function Home() {
 
-  const [tasks,setTasks] = useState<Task[]>([]);
+  const tasks = useLiveQuery(() => {
+    return  db.tasks.toArray()
+  });
 
-  function handleAddItem(task: Task){
-    setTasks((tasks) => [...tasks, task]);
+  async function handleAddItem(task: Task){
+      try {
+        await db.tasks.add(task);
+      } 
+      catch (error) {
+        console.log(`Failed to add ${error}`)  
+      }
   }
 
   return (
@@ -27,7 +36,7 @@ export default function Home() {
 
       <div className="content">
         <TableItems
-          tasks={tasks}
+          tasks={tasks || []}
         />
       </div>
    </div>

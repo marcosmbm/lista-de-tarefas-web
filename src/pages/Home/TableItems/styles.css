@@ -41,3 +41,8 @@
     padding: 8px;
     vertical-align: top;
 }
+
+
+.table-content > table > tbody > tr.checked{
+    color: #A8A8A8;
+}

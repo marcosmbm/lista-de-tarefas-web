@@ -1,12 +1,11 @@
 export class Task {
-    id: number;
+    id?: number;
     completed: boolean;
     description: string;
     createdDate: Date;
     completedDate?: Date;
 
-    constructor(id: number, completed: boolean, description: string, createdDate: Date, completedDate?: Date){
-        this.id = id;
+    constructor(completed: boolean, description: string, createdDate: Date, completedDate?: Date){
         this.completed = completed;
         this.description = description;
         this.createdDate = createdDate;

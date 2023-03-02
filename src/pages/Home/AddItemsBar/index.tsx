@@ -25,7 +25,7 @@ export default function AddItemsBar({onAddItem}: AddItemsBarProps) {
             return
         }
 
-        const task = new Task(Date.now(), false, input.trim(), new Date());
+        const task = new Task(false, input.trim(), new Date());
         onAddItem(task);
 
         setInput('');

@@ -4,11 +4,23 @@ import './styles.css';
 
 import {formattedDate} from '../../../utils/formattedDate';
 
+import { db } from '../../../services/db';
+
 export interface TableItemsProps{
     tasks: Task[];
 }
 
 export default function TableItems({tasks} : TableItemsProps) {
+
+    async function toggleCompleted(task: Task){
+        const completedDate = task.completed ? undefined : new Date();
+
+        await db.tasks.update(
+            task.id || 0, 
+            {completed: !task.completed, completedDate: completedDate}
+        )
+    }
+
   return (
    <div className='table-content'>
         <table>
@@ -25,8 +37,17 @@ export default function TableItems({tasks} : TableItemsProps) {
                 {
                     tasks.map((item) => {
                         return(
-                            <tr key={item.id}>
-                                <td><input type="checkbox" /></td>
+                            <tr 
+                                key={item.id}
+                                className={item.completed ? 'checked' : ''}
+                            >
+                                <td>
+                                    <input 
+                                        type="checkbox" 
+                                        checked={item.completed}
+                                        onChange={() => toggleCompleted(item)}
+                                    />
+                                </td>
                                 <td>{item.description}</td>
                                 <td>{formattedDate(item.createdDate)}</td>
                                 <td>{formattedDate(item?.completedDate)}</td>
