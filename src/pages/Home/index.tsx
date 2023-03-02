@@ -1,4 +1,5 @@
-import React from 'react'; 
+import {useState} from 'react'; 
+import { Task } from '../../models/task';
 
 import './home.css';
 
@@ -7,16 +8,27 @@ import AddItemsBar from './AddItemsBar';
 import TableItems from './TableItems';
 
 export default function Home() {
+
+  const [tasks,setTasks] = useState<Task[]>([]);
+
+  function handleAddItem(task: Task){
+    setTasks((tasks) => [...tasks, task]);
+  }
+
   return (
    <div className='container'>
       <Header/>
 
       <div className="content">
-        <AddItemsBar/>
+        <AddItemsBar
+          onAddItem={handleAddItem}
+        />
       </div>
 
       <div className="content">
-        <TableItems/>
+        <TableItems
+          tasks={tasks}
+        />
       </div>
    </div>
   );

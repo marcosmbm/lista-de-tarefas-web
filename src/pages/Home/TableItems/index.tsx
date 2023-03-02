@@ -1,8 +1,14 @@
-import React from 'react'; 
+import { Task } from '../../../models/task';
 
 import './styles.css';
 
-export default function TableItems() {
+import {formattedDate} from '../../../utils/formattedDate';
+
+export interface TableItemsProps{
+    tasks: Task[];
+}
+
+export default function TableItems({tasks} : TableItemsProps) {
   return (
    <div className='table-content'>
         <table>
@@ -16,33 +22,18 @@ export default function TableItems() {
             </thead>
 
             <tbody>
-                <tr>
-                   <td><input type="checkbox" /></td>
-                   <td>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</td>
-                   <td>2023/03/01 00:00:00</td>
-                   <td>2023/03/01 00:00:00</td>
-                </tr>
-
-                <tr>
-                   <td><input type="checkbox" /></td>
-                   <td>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</td>
-                   <td>2023/03/01 00:00:00</td>
-                   <td>2023/03/01 00:00:00</td>
-                </tr>
-
-                <tr>
-                   <td><input type="checkbox" /></td>
-                   <td>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</td>
-                   <td>2023/03/01 00:00:00</td>
-                   <td>2023/03/01 00:00:00</td>
-                </tr>
-
-                <tr>
-                   <td><input type="checkbox" /></td>
-                   <td>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</td>
-                   <td>2023/03/01 00:00:00</td>
-                   <td>2023/03/01 00:00:00</td>
-                </tr>
+                {
+                    tasks.map((item) => {
+                        return(
+                            <tr key={item.id}>
+                                <td><input type="checkbox" /></td>
+                                <td>{item.description}</td>
+                                <td>{formattedDate(item.createdDate)}</td>
+                                <td>{formattedDate(item?.completedDate)}</td>
+                            </tr>
+                        )
+                    })
+                }
             </tbody>
         </table>
    </div>
