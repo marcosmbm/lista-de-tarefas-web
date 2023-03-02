@@ -6,13 +6,23 @@ import './home.css';
 import Header from '../../components/Header';
 import AddItemsBar from './AddItemsBar';
 import TableItems from './TableItems';
+import ListItems from './ListItems';
 
 import { db } from '../../services/db';
 
 export default function Home() {
 
-  const tasks = useLiveQuery(() => {
-    return  db.tasks.toArray()
+  const tasks = useLiveQuery(async () => {
+    const notCompletedTasks = await db.tasks
+    .filter(item => !item.completed)
+    .toArray();
+
+    const completedTasks = await db.tasks
+    .filter(item => item.completed)
+    .reverse()
+    .sortBy('completedDate');
+
+    return  [...notCompletedTasks, ...completedTasks];
   });
 
   async function handleAddItem(task: Task){
@@ -22,6 +32,15 @@ export default function Home() {
       catch (error) {
         console.log(`Failed to add ${error}`)  
       }
+  }
+
+  async function handleDeleteItem(id: number){
+    try {
+      await db.tasks.delete(id)
+    } 
+    catch (error) {
+      console.log(`Failed to delete ${error}`)  
+    }
   }
 
   return (
@@ -34,9 +53,16 @@ export default function Home() {
         />
       </div>
 
-      <div className="content">
+      <div className="content table-layout">
         <TableItems
           tasks={tasks || []}
+          deleteItem={handleDeleteItem}
+        />
+      </div>
+
+      <div className='content list-layout'>
+        <ListItems
+            tasks={tasks || []}
         />
       </div>
    </div>

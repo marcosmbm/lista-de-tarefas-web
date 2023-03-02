@@ -15,3 +15,17 @@
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
 }
 
+.list-layout{
+    display: none;
+}
+
+@media(max-width: 800px){
+    .table-layout{
+        display: none;
+    }
+
+    .list-layout{
+        display: block;
+    }
+}
+

@@ -1,5 +1,6 @@
 import { Task } from '../../../models/task';
 
+import {FaTrash} from 'react-icons/fa';
 import './styles.css';
 
 import {formattedDate} from '../../../utils/formattedDate';
@@ -8,9 +9,10 @@ import { db } from '../../../services/db';
 
 export interface TableItemsProps{
     tasks: Task[];
+    deleteItem: (id: number) => void;
 }
 
-export default function TableItems({tasks} : TableItemsProps) {
+export default function TableItems({tasks, deleteItem} : TableItemsProps) {
 
     async function toggleCompleted(task: Task){
         const completedDate = task.completed ? undefined : new Date();
@@ -30,6 +32,7 @@ export default function TableItems({tasks} : TableItemsProps) {
                     <th className='description'>Descrição</th>
                     <th>Criado</th>
                     <th>Finalizado</th>
+                    <th></th>
                 </tr>
             </thead>
 
@@ -51,6 +54,13 @@ export default function TableItems({tasks} : TableItemsProps) {
                                 <td>{item.description}</td>
                                 <td>{formattedDate(item.createdDate)}</td>
                                 <td>{formattedDate(item?.completedDate)}</td>
+                                <td>
+                                    <button
+                                        onClick={() => deleteItem(item.id || 0)}
+                                    >
+                                        <FaTrash/>
+                                    </button>
+                                </td>
                             </tr>
                         )
                     })
